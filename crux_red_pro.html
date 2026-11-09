@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090909">
+<title>CRUX RED PRO</title>
+<style>
+:root{--bg:#080808;--panel:#141414;--red:#ff3038;--muted:#aaa;--line:#302024}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% 0%,#3a090d 0,#10090a 28%,#080808 65%);color:#f7f7f7;font:15px system-ui,Arial,sans-serif;min-height:100vh}
+header{padding:24px 18px 18px;border-bottom:1px solid var(--line);background:#090909cc;position:sticky;top:0;z-index:2;backdrop-filter:blur(12px)}
+.brand{font-size:12px;letter-spacing:4px;color:#ff777d;font-weight:800}.logo{font-size:27px;font-weight:950;letter-spacing:1px;margin-top:4px}.logo span{color:var(--red)}.sub{color:var(--muted);font-size:12px;margin-top:4px}
+main{padding:16px;max-width:720px;margin:auto}.hero{border:1px solid #6e2026;border-radius:18px;padding:18px;background:linear-gradient(135deg,#2a0c10,#151012 65%,#111);box-shadow:0 12px 35px #0008}
+.hero small{color:#ff8a90;letter-spacing:2px;font-weight:800}.hero h1{font-size:23px;margin:8px 0}.hero p{color:#c9bfc0;line-height:1.5;margin:0;font-size:13px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}.card{background:linear-gradient(145deg,#191919,#101010);border:1px solid #292929;border-radius:15px;padding:15px;min-width:0}.metric{font-size:25px;font-weight:900;color:#ff555c}.label{font-size:11px;color:#aaa;letter-spacing:1px;text-transform:uppercase;margin-top:4px}
+.section{font-size:13px;letter-spacing:2px;color:#ff777d;font-weight:900;margin:22px 2px 10px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px}.row strong{font-size:14px}.hint{color:#999;font-size:12px;line-height:1.45;margin-top:5px}
+button,select,input{font:inherit}button{border:0;border-radius:11px;padding:12px 14px;background:var(--red);color:white;font-weight:800;cursor:pointer}button.secondary{background:#292929;border:1px solid #444;color:#eee}button:active{transform:scale(.98)}
+.full{width:100%;margin-top:10px}.control{margin:13px 0}.control label{display:flex;justify-content:space-between;font-size:13px;margin-bottom:8px}.control output{color:#ff777d;font-weight:800}
+input[type=range]{width:100%;accent-color:var(--red)}select{background:#1b1b1b;border:1px solid #444;color:white;border-radius:9px;padding:10px;width:100%;margin-top:9px}
+.pill{font-size:10px;color:#ff9a9f;border:1px solid #70272c;padding:4px 8px;border-radius:99px}
+.check{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #292929;color:#ddd;font-size:13px}.check input{accent-color:var(--red);margin-top:3px}
+.notice{background:#211619;border:1px solid #613037;border-radius:12px;padding:12px;color:#d8c4c6;font-size:12px;line-height:1.5;margin-top:14px}
+footer{text-align:center;color:#777;font-size:11px;padding:28px 16px 40px}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#292929;border:1px solid #555;padding:10px 15px;border-radius:10px;display:none;z-index:5;font-size:13px}
+</style>
+</head>
+<body>
+<header><div class="brand">MOBILE GAMING COMPANION</div><div class="logo">CRUX <span>RED PRO</span></div><div class="sub">Free Fire settings & practice companion</div></header>
+<main>
+<section class="hero"><small>PLAYER DASHBOARD</small><h1>Play smart. Practice consistently.</h1><p>Personal settings notebook, device capability notes and aim-training tracker. This tool does not modify Free Fire or guarantee match results.</p></section>
+<div class="grid">
+ <div class="card"><div class="metric">120*</div><div class="label">FPS target</div><div class="hint">Only if your phone and game support it.</div></div>
+ <div class="card"><div class="metric">90%*</div><div class="label">Headshot goal</div><div class="hint">Practice target, not a guaranteed rate.</div></div>
+ <div class="card"><div class="metric">100%*</div><div class="label">Accuracy goal</div><div class="hint">Personal training target only.</div></div>
+ <div class="card"><div class="metric">SAFE</div><div class="label">Fair-play mode</div><div class="hint">No game-file edits or cheat features.</div></div>
+</div>
+<div class="section">SENSITIVITY PROFILE</div>
+<div class="card">
+ <div class="row"><strong>Choose a starting profile</strong><span class="pill">LOCAL PRESET</span></div>
+ <select id="preset"><option value="balanced">Balanced</option><option value="steady">Steady aim</option><option value="fast">Fast drag practice</option></select>
+ <div id="sliders"></div>
+ <button class="full" onclick="saveSettings()">Save my settings</button>
+ <div class="hint" id="saved">Changes stay in this page while it is open.</div>
+</div>
+<div class="section">AIM PRACTICE TRACKER</div>
+<div class="card">
+ <div class="row"><strong>Today's practice rounds</strong><span class="pill" id="roundCount">0 ROUNDS</span></div>
+ <p class="hint">After a training round, record your result. Track consistency instead of expecting a fixed headshot percentage.</p>
+ <div class="grid" style="margin-bottom:0">
+  <div><label class="hint" for="shots">Hits</label><input id="shots" type="number" min="0" value="0" style="width:100%;padding:10px;background:#1b1b1b;color:white;border:1px solid #444;border-radius:9px"></div>
+  <div><label class="hint" for="attempts">Shots fired</label><input id="attempts" type="number" min="0" value="0" style="width:100%;padding:10px;background:#1b1b1b;color:white;border:1px solid #444;border-radius:9px"></div>
+ </div>
+ <div class="row" style="margin-top:12px"><span class="hint">Recorded accuracy</span><strong id="accuracy">—</strong></div>
+ <button class="full" onclick="recordRound()">Record round</button>
+ <button class="full secondary" onclick="resetRounds()">Reset today's tracker</button>
+</div>
+<div class="section">DEVICE & ACCOUNT SAFETY</div>
+<div class="card">
+ <div class="check"><input type="checkbox"> <span>Keep Free Fire updated from its official app store.</span></div>
+ <div class="check"><input type="checkbox"> <span>Avoid modified APKs, injectors, scripts and unofficial tools.</span></div>
+ <div class="check"><input type="checkbox"> <span>Use supported in-game graphics and frame-rate options.</span></div>
+ <div class="check"><input type="checkbox"> <span>Keep account login details private and enable available account protections.</span></div>
+ <div class="check"><input type="checkbox"> <span>Close heavy background apps if the phone is overheating or lagging.</span></div>
+ <div class="notice">Important: no “anti-ban panel” can promise a ban-free account. CRUX RED PRO is a settings and practice companion; it does not connect to Free Fire, unlock FPS, change sensitivity automatically, or alter game files.</div>
+</div>
+</main>
+<footer>CRUX RED PRO • Unofficial fan-made companion • Not affiliated with Garena</footer>
+<div id="toast"></div>
+<script>
+const defaults={balanced:[90,85,80,75,55],steady:[80,75,70,65,50],fast:[100,95,90,85,65]};
+const names=['General','Red Dot','2× Scope','4× Scope','Sniper Scope'];
+let values=[...defaults.balanced],rounds=0;
+const host=document.getElementById('sliders');
+function render(){host.innerHTML='';names.forEach((n,i)=>{let d=document.createElement('div');d.className='control';d.innerHTML=`<label><span>${n}</span><output id="v${i}">${values[i]}</output></label><input aria-label="${n} sensitivity" type="range" min="0" max="200" value="${values[i]}" id="s${i}">`;host.appendChild(d);d.querySelector('input').addEventListener('input',e=>{values[i]=+e.target.value;document.getElementById('v'+i).textContent=values[i]})})}
+document.getElementById('preset').addEventListener('change',e=>{values=[...defaults[e.target.value]];render()});
+function toast(s){let t=document.getElementById('toast');t.textContent=s;t.style.display='block';setTimeout(()=>t.style.display='none',2100)}
+function saveSettings(){document.getElementById('saved').textContent='Settings saved for this session: '+values.join(' / ');toast('Settings saved')}
+function recordRound(){let h=+document.getElementById('shots').value,a=+document.getElementById('attempts').value;if(a<=0||h<0||h>a){toast('Enter valid hits and shots fired');return}rounds++;document.getElementById('roundCount').textContent=rounds+' ROUNDS';document.getElementById('accuracy').textContent=(h/a*100).toFixed(1)+'%';toast('Round recorded')}
+function resetRounds(){rounds=0;document.getElementById('roundCount').textContent='0 ROUNDS';document.getElementById('accuracy').textContent='—';document.getElementById('shots').value=0;document.getElementById('attempts').value=0;toast('Tracker reset')}
+render();
+</script>
+</body>
+</html>
